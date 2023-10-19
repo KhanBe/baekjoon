@@ -1,37 +1,41 @@
-#include <iostream>
-#include <queue>
+#include<iostream>
+#include<vector>
+
+#include<queue>
 
 using namespace std;
 
-int main(void) {
+int main() {
 	ios::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cout.tie(nullptr);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-	priority_queue<int> max_heap;
-	priority_queue<int, vector<int>, greater<int>> min_heap;
+	priority_queue<int> maxheap;
+	priority_queue<int, vector<int>, greater<int>> minheap;
 
-	int n;
+	int n, a;
 	cin >> n;
 
-	int num = 0;
 	for (int i = 0; i < n; i++) {
-		cin >> num;
-		if (max_heap.size() == min_heap.size()) max_heap.push(num);
-		else min_heap.push(num);
+		cin >> a;
 
-		int temp;
-		if (!min_heap.empty()) {
-			if (min_heap.top() < max_heap.top()) { // swap
-				temp = min_heap.top();
-				min_heap.pop();
-				min_heap.push(max_heap.top());
-				max_heap.pop();
-				max_heap.push(temp);
+		if (maxheap.size() == minheap.size()) maxheap.push(a);
+		else minheap.push(a);
+
+		if (!maxheap.empty() && !minheap.empty()) {
+			if (maxheap.top() > minheap.top()) {
+				int maxtemp = maxheap.top();
+				int mintemp = minheap.top();
+
+				maxheap.pop();
+				minheap.pop();
+
+				maxheap.push(mintemp);
+				minheap.push(maxtemp);
 			}
 		}
 
-		cout << max_heap.top() << "\n";
+		cout << maxheap.top() << "\n";
 	}
+	return 0;
 }
-// reference : https://yabmoons.tistory.com/478
