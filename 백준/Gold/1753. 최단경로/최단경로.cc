@@ -1,73 +1,74 @@
 #include<iostream>
-#include<queue>
 #include<vector>
- 
-#define endl "\n"
-#define MAX 20010
-#define INF 987654321
+#include<queue>
+
+#define INT_MAX 987654321
+
 using namespace std;
- 
-int V, E, Start;
-int Dist[MAX];
-vector<pair<int, int>> Vertex[MAX];
- 
-void Input()
-{
-    cin >> V >> E >> Start;
-    for (int i = 0; i < E; i++)
-    {
-        int a, b, c; cin >> a >> b >> c;
-        Vertex[a].push_back(make_pair(b, c));
-    }
-    for (int i = 1; i <= V; i++) Dist[i] = INF;
+
+vector<pair<int, int>> node[20001];
+vector<int> weight;
+
+struct compare {
+	bool operator()(const pair<int, int>& a, const pair<int, int>& b) {
+		return a.first > b.first;
+	}
+};
+
+
+void dijkstra(int start) {
+	priority_queue<pair<int, int>, vector<pair<int, int>>, compare>pq;
+
+	pq.push(make_pair(0, start));// first = weight / second node
+	weight[start] = 0;
+
+	while (!pq.empty()) {
+		int curWeight = pq.top().first;
+		int curNode = pq.top().second;
+		pq.pop();
+
+		for (int i = 0; i < node[curNode].size(); i++) {
+			int NextNode = node[curNode][i].first;
+			int NextWeight = node[curNode][i].second;
+
+			if (weight[NextNode] > curWeight + NextWeight) {
+				
+				weight[NextNode] = curWeight + NextWeight;
+				pq.push({ weight[NextNode], NextNode });
+			}
+		}
+	}
 }
- 
-void Solution()
-{
-    priority_queue<pair<int, int>> PQ;
-    PQ.push(make_pair(0, Start));
-    Dist[Start] = 0;
- 
-    while (PQ.empty() == 0)
-    {
-        int Cost = -PQ.top().first;
-        int Cur = PQ.top().second;
-        PQ.pop();
- 
-        for (int i = 0; i < Vertex[Cur].size(); i++)
-        {
-            int Next = Vertex[Cur][i].first;
-            int nCost = Vertex[Cur][i].second;
- 
-            if (Dist[Next] > Cost + nCost)
-            {
-                Dist[Next] = Cost + nCost;
-                PQ.push(make_pair(-Dist[Next], Next));
-            }
-        }
-    }
- 
-    for (int i = 1; i <= V; i++)
-    {
-        if (Dist[i] == INF) cout << "INF" << endl;
-        else cout << Dist[i] << endl;
-    }
-}
- 
-void Solve()
-{
-    Input();
-    Solution();
-}
- 
-int main(void)
-{
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
- 
-    //freopen("Input.txt", "r", stdin);
-    Solve();
- 
-    return 0;
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int V, E, start;
+
+	cin >> V >> E;
+	cin >> start;
+
+
+	int from, to, w;
+
+
+
+	for (int i = 0; i < E; i++) {
+		cin >> from >> to >> w;// u -> v = w 
+
+		node[from - 1].push_back(make_pair(to - 1, w));
+	}
+
+	weight.assign(V, INT_MAX);
+
+	dijkstra(start - 1);
+
+	for (int i = 0; i < weight.size(); i++) {
+		if (weight[i] == INT_MAX) cout << "INF\n";
+		else cout << weight[i] << "\n";
+	}
+
+	return 0;
 }
