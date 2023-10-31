@@ -3,32 +3,31 @@
 
 using namespace std;
 
-int main(void) {
+int main() {
 	ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-	vector<int> vec;
+	cin.tie(nullptr);
+	cout.tie(nullptr);
 
 	int answer = 0;
+	int N, K;
+	cin >> N >> K;
 
-	int n, cash;
-	cin >> n >> cash;
-	
-	int unit;
-	for (int i = 0; i < n; i++) {
-		cin >> unit;
-		vec.push_back(unit);
+	int data[10] = { 0, };
+
+	int coin = 0;
+	for (int i = 0; i < N; i++) {
+		cin >> coin;
+		data[N - i - 1] = coin;
 	}
+	
+	for (int i = 0; i < N; i++) {
+		coin = data[i];
+		if (1 <= K / coin) {
 
-	for (int i = n - 1; i >= 0; i--) {
-		unit = vec[i];
-		if (cash / unit >= 1) {
-			answer += cash / unit;
-			cash %= unit;
+			answer += K / coin;
+			K %= coin;
+
 		}
-		if (cash == 0) break;
 	}
-	
 	cout << answer;
 }
