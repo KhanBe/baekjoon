@@ -11,11 +11,11 @@ int main() {
 	cin.tie(nullptr);
 	cout.tie(nullptr);
 	
-	int answer = 0;
+	long long int answer = 0;
 	int n;
 	cin >> n;
 
-	vector<pair<int, int>> data(n);
+	vector<pair<long long int, long long int>> data(n);
 
 	for (int i = 0; i < n - 1; i++) {
 
