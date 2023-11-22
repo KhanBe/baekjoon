@@ -1,48 +1,56 @@
-#include <vector>
-#include <algorithm>
 #include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+#include <climits>
+
 using namespace std;
+
 #define INF 2100000000
-
-int N, M, x, y, z;
-long long dist[501];
 bool cycle;
+long long weight[501];
+vector<pair<int, int>> node[501];
 
-vector <pair <int, int>> edge[501];
+void bellman_ford(int size) {
+	fill(weight, weight + size + 1, INF);
+	weight[1] = 0;
+	
+	for (int k = 1; k <= size; k++) {
+		for (int i = 1; i <= size; i++) {
+			for (int j = 0; j < node[i].size(); j++) {
+				int nextNode = node[i][j].first;
+				int nextWeight = node[i][j].second;
 
-void bellman_ford() {
-	fill(dist, dist + N + 1, INF); // 변경하려는 원소의 범위 시작주소, 변경하려는 원소 개수, 변경 값
-	dist[1] = 0;
+				if (weight[i] != INF && weight[nextNode] > weight[i] + nextWeight) {
+					weight[nextNode] = weight[i] + nextWeight;
 
-	for (int k = 1; k <= N; k++) {
-		for (int i = 1; i <= N; i++) {
-			for (int j = 0; j < edge[i].size(); j++) {
-				int next = edge[i][j].first;
-				int nextcost = edge[i][j].second;
-
-				if (dist[i] != INF && dist[next] > dist[i] + nextcost) {
-					dist[next] = dist[i] + nextcost;
-					if (k == N) cycle = true;
+					if (k == size) cycle = true;
 				}
 			}
 		}
 	}
 	if (cycle) cout << -1;
 	else {
-		for (int i = 2; i <= N; i++)
-      // dist[i] = INF 경우는 해당 도시로 가는 경로가 없는 것
-			cout << (dist[i] != INF ? dist[i] : -1) << "\n";
+		for (int i = 2; i <= size; i++) {
+			cout << (weight[i] != INF ? weight[i] : -1) << "\n";
+		}
 	}
 }
 
 int main() {
 	ios::sync_with_stdio(false);
-	cin.tie(NULL); cout.tie(NULL);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
 
-	cin >> N >> M;
-	for (int i = 0; i < M; i++) {
-		cin >> x >> y >> z;
-		edge[x].push_back({ y, z });
+	
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int from, to, time;
+		cin >> from >> to >> time;
+		node[from].push_back({ to, time });
 	}
-	bellman_ford();
+
+	bellman_ford(n);
+	return 0;
 }
