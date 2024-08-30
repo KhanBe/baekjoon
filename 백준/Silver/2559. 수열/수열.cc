@@ -1,37 +1,33 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
 
 using namespace std;
 
-int main(void) {
+int arr[100000] = { 0, };
+int N = 0, K = 0;
+int answer = 0;
+
+int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 	cout.tie(nullptr);
 
-	int answer = 0;
-	int n, k;
-	cin >> n >> k;
-
-	vector<int> arr;
-
-	int num;
-	for (int i = 0; i < n; i++) {
-		cin >> num;
-		arr.push_back(num);
+	cin >> N >> K;
+	for (int i = 0; i < N; i++) {
+		cin >> arr[i];
 	}
 
-	int point = 0;
-	int sum = 0;
-	for (int i = point; i < point + k; i++) {//초기배열
-		sum += arr[i];
+	for (int i = 0; i < K; i++) {
+		answer += arr[i];
 	}
-	answer = sum;
 
-	for (point = 0; point < n - k; point++) {
-		sum -= arr[point];
-		sum += arr[point + k];
-		if (answer < sum) answer = sum;
+	int p2 = K;
+	int temp = answer;
+	for (int p1 = 0; p2 < N; p1++, p2++) {
+		temp = temp - arr[p1] + arr[p2];
+		answer = max(answer, temp);
 	}
 	cout << answer;
 }
