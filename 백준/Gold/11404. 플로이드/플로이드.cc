@@ -1,19 +1,20 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
-
-
-#define INF 987654321
 
 using namespace std;
 
-int V, E;
+#define MAX 987654321
+
 int city[101][101];
+int n = 0;
+int m = 0;
 
 void floyd() {
-	for (int k = 1; k <= V; k++) {
-		for (int i = 1; i <= V; i++) {
-			for (int j = 1; j <= V; j++) {
+	for (int k = 1; k <= n; k++) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
 				city[i][j] = min(city[i][j], city[i][k] + city[k][j]);
 			}
 		}
@@ -25,29 +26,30 @@ int main() {
 	cin.tie(nullptr);
 	cout.tie(nullptr);
 
-	cin >> V;
-	cin >> E;
-
-	for (int i = 1; i <= V; i++) {
-		for (int j = 1; j <= V; j++) {
+	cin >> n;
+	cin >> m;
+	
+	for (int i = 1; i <= n; i++) {//fill
+		for (int j = 1; j <= n; j++) {
 			if (i == j) city[i][j] = 0;
-			else city[i][j] = INF;
+			else city[i][j] = MAX;
 		}
 	}
-	for (int i = 0; i < E; i++) {
-		int a, b, c;
-		cin >> a >> b >> c;
-		city[a][b] = min(city[a][b], c);
+
+
+	for (int i = 0; i < m; i++) {
+		int a, b, w;
+		cin >> a >> b >> w;
+		city[a][b] = min(city[a][b], w);
 	}
 
 	floyd();
 
-	for (int i = 1; i <= V; i++) {
-		for (int j = 1; j <= V; j++) {
-			if (city[i][j] == INF) cout << "0 ";
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			if (city[i][j] == MAX) cout << "0 ";
 			else cout << city[i][j] << " ";
 		}
 		cout << "\n";
 	}
-	return 0;
 }
