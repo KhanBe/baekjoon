@@ -1,33 +1,28 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
 
 using namespace std;
 
-int main(void) {
+int card[20000005];
+int N = 0, M = 0;
+
+int main() {
 	ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
 
-	int num;
-
-	int n, m;
-	cin >> n;
-
-	vector<int> v(n);
-
-	for (int i = 0; i < n; i++) {
-		cin >> v[i];
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		int temp = 0;
+		cin >> temp;
+		card[10000000 + temp]++;
 	}
-	sort(v.begin(), v.end());
-
-	cin >> m;
-	for (int i = 0; i < m; i++) {
-		cin >> num;
-		cout << upper_bound(v.begin(), v.end(), num) - lower_bound(v.begin(), v.end(), num) << " ";
+	cin >> M;
+	for (int i = 0; i < M; i++) {
+		int temp = 0;
+		cin >> temp;
+		cout << card[10000000 + temp] << " ";
 	}
-	//이함수들을 쓰기전에 정렬 필수
-	//upper_bound는 num을 초과한 인덱스를 반환
-	//lower_bound는 num이 처음나오는 인덱스 반환
-	//upper - lower 해주면 결국 num개수를 알 수 있다.
 }
