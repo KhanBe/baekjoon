@@ -1,37 +1,33 @@
 #include <iostream>
+#include <string>
 #include <vector>
 
 using namespace std;
 
-int arr[100001] = { 0, };
-int arr_sum[100001] = { 0, };
+int main(void) {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    int arr[100001];
+    int dp[100001];
 
-int getMax(int a, int b) {
-	if (a > b) return a;
-	return b;
-}
+    int n = 0;
+    cin >> n;
 
-int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cout.tie(nullptr);
+    for (int i =1;i <=n;i++) {
+        cin >> arr[i];
+    }
 
-	int max = 0;
-	int n = 0;
-	cin >> n;
+    
+    dp[1] = arr[1];
 
-	for (int i = 1; i <= n; i++) {
-		cin >> arr[i];
-	}
+    int max_answer = -987654321;
+    for (int i=1;i<=n;i++) {
+        dp[i] = max(dp[i - 1] + arr[i], arr[i]);
 
-	// arr_sum settings
-	max = arr[1];
-	arr_sum[1] = arr[1];
-	for (int i = 2; i <= n; i++) {
-		arr_sum[i] = getMax(arr_sum[i - 1] + arr[i], arr[i]);
-		max = getMax(arr_sum[i], max);
-	}
-	
-	cout << max;
-	return 0;
+        max_answer = max_answer < dp[i] ? dp[i] : max_answer;
+    }
+
+    cout << max_answer;
+    return 0;
 }
