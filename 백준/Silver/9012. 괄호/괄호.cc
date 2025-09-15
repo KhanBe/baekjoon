@@ -1,38 +1,41 @@
 #include <iostream>
-#include <stack>
+#include <vector>
 #include <string>
+#include <stack>
+
 using namespace std;
 
-int main() {
-	int k;
-	string value;
-	char c;
+vector<string> answer;
 
-	cin >> k;
+int main(void) {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    int T = 0;
+    string temp = "";
 
-	stack<char> st;
+    cin >> T;  
+    for (int i = 0; i < T; i++) {
+        cin >> temp;
 
-	for (int i = 0; i < k; i++) {
-		cin >> value;
+        stack<char> s;
 
-		for (int j = 0; j < value.length(); j++) {
-			c = value.at(j);
+        for (int j = 0; j < temp.size(); j++){
+            if (temp[j] == '(') {
+                s.push(temp[j]);
+            }
+            else if (temp[j] == ')') {
+                if (s.size() == 0) {
+                    s.push(temp[j]);
+                    break;
+                }
+                else s.pop();
+            }
+        }
+        answer.push_back((s.empty() ? "YES" : "NO"));
+    }
+    
+    for (auto a : answer) cout << a << "\n";
 
-			if (c == '(') st.push(c);
-			else {
-				if (st.size() == 0) {
-					st.push(c);
-					break;
-				}
-
-				else st.pop();
-			}
-		}
-
-		if (st.size() == 0) cout << "YES" << endl;
-		else cout << "NO" << endl;
-		
-		while (!st.empty()) st.pop(); // c++은 clear가 없다
-	}
-
+    return 0;
 }
